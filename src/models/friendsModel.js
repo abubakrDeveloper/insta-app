@@ -27,3 +27,5 @@ const friendSchema = new mongoose.Schema(
     },
   }
 )
+
+module.exports = mongoose.model("friend", friendSchema);
