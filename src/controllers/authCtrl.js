@@ -45,7 +45,38 @@ const authCtrl = {
   },
 
   lpogin: async (req, res ) => {
-    
+    try {
+      const { email, password } = req.body;
+
+      if(!email || !password) {
+        return  res.status(400).send({message: "Email and password are prequired"});
+      }
+
+      const user = await User.findOne({email});
+      if(!user) {
+        return res.status(400).send({message: "Invalid email or password"});
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, usser.password);
+      if(!isPasswordValid) {
+        res.status(400).send({message: "invalid email or password"});
+      }
+
+      const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {exiresIn: "12h"});
+
+      res.status(200).send({message: "user login Successfuly",
+        user:{
+          id: user._id,
+          name: user.name,
+          email:user.email
+        },
+        token
+      });
+
+    } catch (error) {
+      console.error("Error in Login", error);
+      res.status(500).send({message: "invalid email or password"})
+    }
   }
 }
 
