@@ -8,10 +8,11 @@ const PORT = process.env.PORT || 4000;
 const MONGO_URL = process.env.MONGO_URL;
 
 app.get("/", (req, res) => {
-  send("inspa-app: this is home gape");
+  res.send({message: "thisi is home page"});
 });
 
 mongoose.connect(MONGO_URL).then(() => {
   app.listen(PORT, () => console.log(`server started ${PORT} on port...`)
   )
 })
+
